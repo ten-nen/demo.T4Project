@@ -1,0 +1,3 @@
+D:\project_demo\T4Project\T4Project.Models\bin\Debug\T4Project.Models.dll
+D:\project_demo\T4Project\T4Project.Models\obj\Debug\T4Project.Models.dll
+D:\project_demo\T4Project\T4Project.Models\obj\Debug\T4Project.Models.pdb

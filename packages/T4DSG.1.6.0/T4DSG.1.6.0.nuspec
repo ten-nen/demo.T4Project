@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>T4DSG</id>
+    <version>1.6.0</version>
+    <title>T4 Database Schema Generator</title>
+    <authors>Ivaylo Gochkov</authors>
+    <owners>Ivaylo Gochkov</owners>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>https://nuget.org/packages/T4DSG</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>T4DSG is a T4 template that generates database helper in order to eliminate the use of literal strings in EF code first mapping.</description>
+    <summary />
+    <releaseNotes />
+    <language />
+    <tags>DB Database T4 EF Code First T4DSG</tags>
+  </metadata>
+</package>

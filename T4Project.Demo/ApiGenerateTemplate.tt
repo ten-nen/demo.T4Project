@@ -1,0 +1,150 @@
+﻿<#@ template language="C#" debug="false" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Diagnostics" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections" #>
+<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.Reflection" #>
+<#
+	//参数所在dll
+	string entityAssemblyName="T4Project.Demo\\App_Data\\T4Project.Models.dll";
+	//参数所在命名空间
+    string entityNamespace = "T4Project.Models";
+	//项目命名空间前缀
+	string projecNamespace="T4Project";
+	//输出路径
+	string destinationFolder = "ControllersExt";
+	//调试
+	//System.Diagnostics.Debugger.Launch();
+	var paramsTypes =Assembly.LoadFrom(entityAssemblyName).GetExportedTypes().Where(t => t.IsClass && t.Namespace.Equals(entityNamespace,StringComparison.OrdinalIgnoreCase));
+    foreach (var t in paramsTypes)
+    {
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using System.Text;
+using <#=projecNamespace#>.Models;
+
+namespace <#=projecNamespace#>.Controllers
+{
+    
+    public partial class <#=t.Name#>Controller : ApiController
+    {
+        #region <#=t.Name#>
+		/// <summary>
+        /// default update by id
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+		[HttpPut]
+        public bool <#=t.Name#>Update(<#=t.Name#> param)
+        {
+			StringBuilder setParts = new StringBuilder();
+<#			foreach (var p in t.GetProperties()){  #>
+			if(param.<#=p.Name#><#=CheckIsNullString(p.PropertyType)#>)
+				setParts.AppendFormat(" {0}={1},","<#=p.Name#>","@<#=p.Name#>" );
+<# }#>
+			return BusinessProvider.<#=t.Name#>Bll.Update(param,setParts.ToString().TrimEnd(','));
+		}
+
+		[HttpPost]
+        public long <#=t.Name#>Add(<#=t.Name#> param)
+        {
+            <#=t.Name#> model=new <#=t.Name#>();
+<#			foreach (var p in t.GetProperties()){  #>
+			model.<#=p.Name#>= param.<#=p.Name#><#=CheckIsNullString(p.PropertyType)#>?param.<#=p.Name#>:<#=DefaultStringByType(p.PropertyType)#>;
+<# }#>
+			return BusinessProvider.<#=t.Name#>Bll.Create(model);
+        }
+
+		[HttpGet]
+        public IEnumerable<<#=t.Name#>> <#=t.Name#>Query(<#=t.Name#> param)
+        {
+            StringBuilder whereParts = new StringBuilder();
+<#			foreach (var p in t.GetProperties()){  #>
+			if(param.<#=p.Name#><#=CheckIsNullString(p.PropertyType)#>)
+				whereParts.AppendFormat(" {0}={1} and","<#=p.Name#>",param.<#=p.Name#> );
+<# }#>
+			string wherePartsStr=whereParts.ToString();
+			return BusinessProvider.<#=t.Name#>Bll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr);
+        }
+
+		[HttpDelete]
+        public long <#=t.Name#>Delete(<#=t.Name#> param)
+        {
+            StringBuilder whereParts = new StringBuilder();
+<#			foreach (var p in t.GetProperties()){  #>
+			if(param.<#=p.Name#><#=CheckIsNullString(p.PropertyType)#>)
+				whereParts.AppendFormat(" {0}={1} and","<#=p.Name#>",param.<#=p.Name#> );
+<# }#>
+			string wherePartsStr=whereParts.ToString();
+			return BusinessProvider.<#=t.Name#>Bll.Delete(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr);
+        }
+        #endregion
+    }
+}
+
+<#
+        // Write new POCO class to its own file
+        SaveOutput(t.Name + "Controller.cs", destinationFolder);
+    } 
+#>
+<#+
+	string DefaultStringByType(Type t)
+	{
+		if(t.Equals(typeof(Nullable<int>))||t.Equals(typeof(Nullable<long>))||	t.Equals(typeof(Nullable<decimal>))||t.Equals(typeof(Nullable<double>))|| t.Equals(typeof(Nullable<Int16>))||t.Equals(typeof(Nullable<Int32>))|| t.Equals(typeof(Nullable<Int64>)))
+		{
+			return "0";
+		}
+		else if(t.Equals(typeof(Nullable<bool>)))
+		{
+			return "false";
+		}
+		else if(t.Equals(typeof(Nullable<DateTime>)))
+		{
+			return "DateTime.Now";
+		}
+		else if(t.Equals(typeof(string)))
+		{
+			return "string.Empty";
+		}
+		else
+		{
+			return "null";
+		}
+	}
+	string CheckIsNullString(Type t)
+    {
+		if(t.Equals(typeof(Nullable<int>))||t.Equals(typeof(Nullable<long>))||	t.Equals(typeof(Nullable<decimal>))||t.Equals(typeof(Nullable<double>))|| t.Equals(typeof(Nullable<Int16>))||t.Equals(typeof(Nullable<Int32>))|| t.Equals(typeof(Nullable<Int64>))||t.Equals(typeof(Nullable<bool>))||t.Equals(typeof(Nullable<DateTime>)))
+		{
+			return ".HasValue";
+		}
+		else if(t.Equals(typeof(string)))
+		{
+			return "!=null";
+		}
+		else
+		{
+			return "!=null";
+		}
+	}
+   void SaveOutput(string outputFileName, string destinationFolder)
+    {
+        // Write to destination folder
+        string templateDirectory = Path.Combine(Path.GetDirectoryName(Host.TemplateFile), destinationFolder);
+        string outputFilePath = Path.Combine(templateDirectory, outputFileName);
+        File.Delete(outputFilePath);
+        File.WriteAllText(outputFilePath, this.GenerationEnvironment.ToString()); 
+ 
+        // Flush generation
+        this.GenerationEnvironment.Remove(0, this.GenerationEnvironment.Length);
+    }
+#>
