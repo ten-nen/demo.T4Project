@@ -22,8 +22,6 @@ namespace T4Project.Controllers
         public bool FullConditionUpdate(FullCondition param)
         {
 			StringBuilder setParts = new StringBuilder();
-			if(param.Id.HasValue)
-				setParts.AppendFormat(" {0}={1},","Id","@Id" );
 			if(param.ExpressType.HasValue)
 				setParts.AppendFormat(" {0}={1},","ExpressType","@ExpressType" );
 			if(param.ConditionType.HasValue)

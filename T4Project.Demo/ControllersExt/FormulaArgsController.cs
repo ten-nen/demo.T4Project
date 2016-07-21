@@ -22,8 +22,6 @@ namespace T4Project.Controllers
         public bool FormulaArgsUpdate(FormulaArgs param)
         {
 			StringBuilder setParts = new StringBuilder();
-			if(param.Id.HasValue)
-				setParts.AppendFormat(" {0}={1},","Id","@Id" );
 			if(param.Typeid.HasValue)
 				setParts.AppendFormat(" {0}={1},","Typeid","@Typeid" );
 			if(param.Val.HasValue)

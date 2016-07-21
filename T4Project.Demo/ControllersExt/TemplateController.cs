@@ -22,8 +22,6 @@ namespace T4Project.Controllers
         public bool TemplateUpdate(Template param)
         {
 			StringBuilder setParts = new StringBuilder();
-			if(param.Id.HasValue)
-				setParts.AppendFormat(" {0}={1},","Id","@Id" );
 			if(param.Name!=null)
 				setParts.AppendFormat(" {0}={1},","Name","@Name" );
 			if(param.FreightType.HasValue)

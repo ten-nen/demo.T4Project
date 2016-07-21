@@ -48,7 +48,7 @@ namespace <#=projecNamespace#>.Controllers
         public bool <#=t.Name#>Update(<#=t.Name#> param)
         {
 			StringBuilder setParts = new StringBuilder();
-<#			foreach (var p in t.GetProperties()){  #>
+<#			foreach (var p in t.GetProperties()){ if(p.Name.Equals("Id",StringComparison.OrdinalIgnoreCase)) continue;  #>
 			if(param.<#=p.Name#><#=CheckIsNullString(p.PropertyType)#>)
 				setParts.AppendFormat(" {0}={1},","<#=p.Name#>","@<#=p.Name#>" );
 <# }#>
