@@ -51,7 +51,7 @@ namespace T4Project.Controllers
         }
 
 		[HttpGet]
-        public IEnumerable<FormulaArgs> FormulaArgsQuery(FormulaArgs param)
+        public IEnumerable<FormulaArgs> FormulaArgsQuery(FormulaArgs param,int offset=0,int limit=20,string orderby="")
         {
             StringBuilder whereParts = new StringBuilder();
 			if(param.Id.HasValue)
@@ -66,8 +66,9 @@ namespace T4Project.Controllers
 				whereParts.AppendFormat(" {0}={1} and","AreaId",param.AreaId );
 			if(param.GroupMark!=null)
 				whereParts.AppendFormat(" {0}={1} and","GroupMark",param.GroupMark );
+			
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.FormulaArgsBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr);
+			return BusinessProvider.FormulaArgsBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr,offset,limit,orderby);
         }
 
 		[HttpDelete]

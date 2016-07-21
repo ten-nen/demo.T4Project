@@ -48,7 +48,7 @@ namespace T4Project.Controllers
         }
 
 		[HttpGet]
-        public IEnumerable<Formula> FormulaQuery(Formula param)
+        public IEnumerable<Formula> FormulaQuery(Formula param,int offset=0,int limit=20,string orderby="")
         {
             StringBuilder whereParts = new StringBuilder();
 			if(param.Id.HasValue)
@@ -61,8 +61,9 @@ namespace T4Project.Controllers
 				whereParts.AppendFormat(" {0}={1} and","Template",param.Template );
 			if(param.Typeid.HasValue)
 				whereParts.AppendFormat(" {0}={1} and","Typeid",param.Typeid );
+			
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.FormulaBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr);
+			return BusinessProvider.FormulaBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr,offset,limit,orderby);
         }
 
 		[HttpDelete]

@@ -83,6 +83,10 @@
     </Compile>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="ControllersExt\ConditionController.cs" />
+    <Compile Include="ControllersExt\FormulaArgsController.cs" />
+    <Compile Include="ControllersExt\FormulaController.cs" />
+    <Compile Include="ControllersExt\FullConditionController.cs" />
+    <Compile Include="ControllersExt\TemplateController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

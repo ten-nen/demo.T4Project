@@ -66,15 +66,16 @@ namespace <#=projecNamespace#>.Controllers
         }
 
 		[HttpGet]
-        public IEnumerable<<#=t.Name#>> <#=t.Name#>Query(<#=t.Name#> param)
+        public IEnumerable<<#=t.Name#>> <#=t.Name#>Query(<#=t.Name#> param,int offset=0,int limit=20,string orderby="")
         {
             StringBuilder whereParts = new StringBuilder();
 <#			foreach (var p in t.GetProperties()){  #>
 			if(param.<#=p.Name#><#=CheckIsNullString(p.PropertyType)#>)
 				whereParts.AppendFormat(" {0}={1} and","<#=p.Name#>",param.<#=p.Name#> );
 <# }#>
+			
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.<#=t.Name#>Bll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr);
+			return BusinessProvider.<#=t.Name#>Bll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr,offset,limit,orderby);
         }
 
 		[HttpDelete]

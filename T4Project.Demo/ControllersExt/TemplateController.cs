@@ -51,7 +51,7 @@ namespace T4Project.Controllers
         }
 
 		[HttpGet]
-        public IEnumerable<Template> TemplateQuery(Template param)
+        public IEnumerable<Template> TemplateQuery(Template param,int offset=0,int limit=20,string orderby="")
         {
             StringBuilder whereParts = new StringBuilder();
 			if(param.Id.HasValue)
@@ -66,8 +66,9 @@ namespace T4Project.Controllers
 				whereParts.AppendFormat(" {0}={1} and","ExpressType",param.ExpressType );
 			if(param.IsCondition.HasValue)
 				whereParts.AppendFormat(" {0}={1} and","IsCondition",param.IsCondition );
+			
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.TemplateBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr);
+			return BusinessProvider.TemplateBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr,offset,limit,orderby);
         }
 
 		[HttpDelete]
