@@ -66,7 +66,7 @@ namespace T4Project.Controllers
 				whereParts.AppendFormat(" {0}={1} and","IsCondition",param.IsCondition );
 			
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.TemplateBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr,offset,limit,orderby);
+			return BusinessProvider.TemplateBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,wherePartsStr.Length-3):wherePartsStr,offset,limit,orderby);
         }
 
 		[HttpDelete]
@@ -86,7 +86,7 @@ namespace T4Project.Controllers
 			if(param.IsCondition.HasValue)
 				whereParts.AppendFormat(" {0}={1} and","IsCondition",param.IsCondition );
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.TemplateBll.Delete(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr);
+			return BusinessProvider.TemplateBll.Delete(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,wherePartsStr.Length-3):wherePartsStr);
         }
         #endregion
     }

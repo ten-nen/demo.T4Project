@@ -61,7 +61,7 @@ namespace T4Project.Controllers
 				whereParts.AppendFormat(" {0}={1} and","Typeid",param.Typeid );
 			
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.FormulaBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr,offset,limit,orderby);
+			return BusinessProvider.FormulaBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,wherePartsStr.Length-3):wherePartsStr,offset,limit,orderby);
         }
 
 		[HttpDelete]
@@ -79,7 +79,7 @@ namespace T4Project.Controllers
 			if(param.Typeid.HasValue)
 				whereParts.AppendFormat(" {0}={1} and","Typeid",param.Typeid );
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.FormulaBll.Delete(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr);
+			return BusinessProvider.FormulaBll.Delete(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,wherePartsStr.Length-3):wherePartsStr);
         }
         #endregion
     }

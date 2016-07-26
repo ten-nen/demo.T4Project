@@ -71,7 +71,7 @@ namespace T4Project.Controllers
 				whereParts.AppendFormat(" {0}={1} and","Enabled",param.Enabled );
 			
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.FullConditionBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr,offset,limit,orderby);
+			return BusinessProvider.FullConditionBll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,wherePartsStr.Length-3):wherePartsStr,offset,limit,orderby);
         }
 
 		[HttpDelete]
@@ -93,7 +93,7 @@ namespace T4Project.Controllers
 			if(param.Enabled.HasValue)
 				whereParts.AppendFormat(" {0}={1} and","Enabled",param.Enabled );
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.FullConditionBll.Delete(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr);
+			return BusinessProvider.FullConditionBll.Delete(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,wherePartsStr.Length-3):wherePartsStr);
         }
         #endregion
     }

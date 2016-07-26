@@ -75,7 +75,7 @@ namespace <#=projecNamespace#>.Controllers
 <# }#>
 			
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.<#=t.Name#>Bll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr,offset,limit,orderby);
+			return BusinessProvider.<#=t.Name#>Bll.Query(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,wherePartsStr.Length-3):wherePartsStr,offset,limit,orderby);
         }
 
 		[HttpDelete]
@@ -87,7 +87,7 @@ namespace <#=projecNamespace#>.Controllers
 				whereParts.AppendFormat(" {0}={1} and","<#=p.Name#>",param.<#=p.Name#> );
 <# }#>
 			string wherePartsStr=whereParts.ToString();
-			return BusinessProvider.<#=t.Name#>Bll.Delete(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,3):wherePartsStr);
+			return BusinessProvider.<#=t.Name#>Bll.Delete(param,wherePartsStr.EndsWith("and")?wherePartsStr.Substring(0,wherePartsStr.Length-3):wherePartsStr);
         }
         #endregion
     }
