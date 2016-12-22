@@ -22,9 +22,9 @@
     // The SQL server name or IP
     string sqlServer = "db.menyaer.com,2866";
     // The SQL username
-    string sqlLogin = "malluser";
+    string sqlLogin = "";
     // The SQL password
-    string sqlPassword = "XZ#^7#P$";
+    string sqlPassword = "";
     // The SQL database to generate the POCOs for
     string sqlDatabase = "MNTBM.JV.Shop.Freight";
     // The namespace to apply to the generated classes
